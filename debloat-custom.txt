@@ -1,0 +1,68 @@
+# Xiaomi Android TV 9 — debloat list
+# Adapted from the tested list in https://github.com/Gathin23/CleanYourTV (examples/xiaomi-mitv-axso0)
+# for this TV. Apply/undo with the repo's tools:
+#   Apply:  $env:TV_HOST='<TV_HOST>'; powershell -File tools\disable.ps1 work\debloat-custom.txt
+#   Undo:   $env:TV_HOST='<TV_HOST>'; powershell -File tools\restore.ps1 work\debloat-custom.txt
+# Everything is DISABLED (pm disable-user), nothing is uninstalled. Comment out any line to keep it.
+#
+# Personal choices on this TV (kept commented below): voice assistant, Chromecast/Mi Cast/Miracast,
+# Mi Music, Play Games, Play Movies, Mi Gallery, official YouTube (made unused by SmartTube, disabled).
+#
+# Notes from this firmware:
+# - `svc power reboot` gets killed; reboot through adb's own reboot service instead.
+# - Glance puts news/ads on the standby screen (not installed on this unit, left for other units).
+# - Xiaomi's `set_auto_play` (1 out of the box) can open Live TV's empty antenna input at power-on;
+#   `settings put global set_auto_play 0` makes the TV start on Home. Undo: set it to 1.
+
+# Xiaomi + Google telemetry
+com.miui.tv.analytics
+com.xiaomi.statistic
+com.google.android.feedback
+com.google.android.tv.bugreportsender
+
+# PatchWall, content rows, sponsored rows
+com.mitv.tvhome.atv
+com.xm.webcontent
+com.xiaomi.floatingframe
+com.google.android.tvrecommendations
+com.google.android.leanbacklauncher.recommendations
+android.autoinstalls.config.xioami.dangal   # Play auto-install of partner apps (sic, "xioami")
+com.glance.tv                               # Glance lock-screen news and ads
+com.mitv.tvhome.mitvplus                    # Mi TV+ sponsored live channels
+co.sensara.tv.mitv                          # Sensara partner TV guide (sponsored show recommendations)
+
+# Xiaomi background services
+com.xiaomi.mitv.tvmanager                   # "TV Manager" cleaner
+com.xiaomi.mitv.handbook
+com.xiaomi.mitv.updateservice               # firmware updates: re-enable to check for one
+com.xiaomo.tv.milegal                       # static legal / privacy text screens
+
+# DISABLED instead of kept: stock preinstalled apps made redundant by the new setup
+com.google.android.youtube.tv               # official YouTube: superseded by SmartTube
+com.netflix.ninja                           # Netflix: owner chose to remove it
+com.amazon.amazonvideo.livingroom           # Prime Video: owner chose to remove it
+
+# KEPT: voice assistant (owner's choice)
+# com.google.android.katniss
+# com.google.android.speech.pumpkin
+
+# KEPT: casting / mirroring (owner's choice)
+# com.google.android.apps.mediashell          # Chromecast built-in
+# com.mitv.milinkservice                      # Mi Cast
+# com.xiaomi.mitv.smartshare
+# com.xiaomi.wfdsinkhelperservice             # Miracast sink
+
+# KEPT: preloaded apps (owner's choice; USB photo/video viewing stays)
+# com.xiaomi.mimusic2
+# com.google.android.play.games
+# com.google.android.videos                   # Play Movies & TV
+# com.mitv.gallery                            # Mi Gallery; Media Player still opens USB photos
+
+# Not installed on this unit (left for other units of the family):
+# com.fancode.tv, com.suntv.sunnxt.mitv, com.eros.mitv, com.discoveryplus.mitv,
+# com.ddnational.prasarbharati, net.aljazeera.english
+
+# Settings applied separately from this list (undo noted):
+#   settings put global set_auto_play 0        # start on Home, not Live TV.  Undo: 1
+#   settings put global private_dns_mode hostname + private_dns_specifier dns.adguard-dns.com
+#     (AdGuard DNS; does NOT block YouTube video ads. Undo: private_dns_mode opportunistic)
